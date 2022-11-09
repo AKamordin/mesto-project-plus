@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import Card from '../models/card';
-import { IAuthRequest } from '../types';
+import { ISessionRequest } from '../types';
 import BadRequestError from '../errors/BadRequestError';
 import {
   CARD_DELETE_FORBIDDEN,
@@ -19,7 +19,7 @@ export const getCards = (req: Request, res: Response, next: NextFunction) => {
     .catch(next);
 };
 
-export const createCard = (req: IAuthRequest, res: Response, next: NextFunction) => {
+export const createCard = (req: ISessionRequest, res: Response, next: NextFunction) => {
   const userId = req.user?._id;
   Card.create({ ...req.body, owner: userId })
     .then((card) => res.status(HTTP_STATUS_CREATED).send(card))
@@ -32,7 +32,7 @@ export const createCard = (req: IAuthRequest, res: Response, next: NextFunction)
     });
 };
 
-export const deleteCard = (req: IAuthRequest, res: Response, next: NextFunction) => {
+export const deleteCard = (req: ISessionRequest, res: Response, next: NextFunction) => {
   const userId = req.user?._id;
   const { cardId } = req.params;
   Card.findById(cardId)
@@ -55,7 +55,7 @@ export const deleteCard = (req: IAuthRequest, res: Response, next: NextFunction)
     });
 };
 
-export const like = (req: IAuthRequest, res: Response, next: NextFunction) => {
+export const like = (req: ISessionRequest, res: Response, next: NextFunction) => {
   const userId = req.user?._id;
   const { cardId } = req.params;
   Card.findByIdAndUpdate(
@@ -78,7 +78,7 @@ export const like = (req: IAuthRequest, res: Response, next: NextFunction) => {
     });
 };
 
-export const dislike = (req: IAuthRequest, res: Response, next: NextFunction) => {
+export const dislike = (req: ISessionRequest, res: Response, next: NextFunction) => {
   const userId = req.user?._id;
   const { cardId } = req.params;
   Card.findByIdAndUpdate(
