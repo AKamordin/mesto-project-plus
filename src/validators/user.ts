@@ -6,10 +6,22 @@ import {
   USER_ERR_EMAIL, USER_ERR_EMAIL_EMPTY, USER_ERR_NAME,
   USER_ERR_PASSWORD_EMPTY, USER_ERR_PASSWORD_LEN,
 } from '../constants';
+import validateId from './index';
 
 export const isURL = (url: string): boolean => URL_PATTERN.test(url);
 
 export const isEmail = (email: string): boolean => validator.isEmail(email);
+
+export const isUserIdValid = celebrate({
+  params: Joi.object({
+    userId: Joi.string().required()
+      .custom(validateId, 'objectId validation')
+      .messages({
+        'any.required': 'Это обязательный параметр',
+        'any.invalid': 'Некорректное значение параметра userId',
+      }),
+  }),
+});
 
 export const isUserValid = celebrate({
   body: Joi.object().keys({

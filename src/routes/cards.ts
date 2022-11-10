@@ -2,8 +2,7 @@ import { Router } from 'express';
 import {
   createCard, deleteCard, dislike, getCards, like,
 } from '../controllers/cards';
-import isCardValid from '../validators/card';
-import { isCardIdValid } from '../validators';
+import { isCardIdValid, isCardValid } from '../validators/card';
 
 const router = Router();
 
